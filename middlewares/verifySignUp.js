@@ -1,5 +1,5 @@
 const User = require('../Models/user.models')
-
+const constants = require('../utils/constants');
 /**Creating middleware for signup */
 
 validateSignUp = async (req,res,next)=>{
@@ -29,6 +29,14 @@ validateSignUp = async (req,res,next)=>{
     if(!req.body.password){
         return res.status(400).send({
             message: "Failed! Password is missing"
+        })
+    }
+
+    const userType = req.body.userType;
+    const userTypes = [constants.userTypes.customer , constants.userTypes.admin , constants.userTypes.engineer];
+    if(userType && !userTypes.includes(userType)){
+        return res.status(400).send({
+            message: "userType is not correctly provided! please choose  [`CUSTOMER`,`ADMIN`,`ENGINEER`]"
         })
     }
 

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const DB_Config = require('./Configs/db.config');
 const bodyParser = require('body-parser');
 const authRoute = require('./Routes/auth.routes');
+const userRoutes = require('./Routes/user.routes');
 /**
  * Mongoose Connection
  */
@@ -21,6 +22,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 //Auth Routes
 app.use('/crm/api/v1/auth',authRoute);
+
+//UserRoutes
+app.use('/crm/api/v1',userRoutes);
 
 
 
