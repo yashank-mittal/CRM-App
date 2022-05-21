@@ -8,8 +8,8 @@
  */
 
 const jwt = require('jsonwebtoken');
-
-
+const User = require('../Models/user.models')
+const constants = require('../utils/constants');
 
 
 
@@ -41,8 +41,30 @@ verifyToken = (req,res,next) => {
 }
 
 
+isAdmin = async(req,res,next) => {
+    /**
+     * Fetch user from the DB using the userId
+     */
+    const user= await User.findOne({userId : req.userId});
+
+    /**
+     * Check what is the userType
+     */
+
+    if(user && user.userType == constants.userTypes.admin){
+        next();
+    }else{
+        res.status(403).send({
+            message: "Requires ADMIN role"
+        })
+    }
+
+}
+
+
 const authJwt = {
-    verifyToken : verifyToken
+    verifyToken : verifyToken,
+    isAdmin : isAdmin
 };
 
 module.exports = authJwt;
